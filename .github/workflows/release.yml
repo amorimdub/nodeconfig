@@ -2,23 +2,12 @@ name: Publish Node.js Package
 
 on:
   push:
-    branches:
-      - main
-      
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      # - run: npm ci
-      # - run: npm test
+    tags:
+      - 'v*'
 
+jobs:
   publish-gpr:
     name: Publish
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,7 +20,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
   release:
-    name: Create Release
+    name: Release
     needs: publish-gpr
     runs-on: ubuntu-latest
     steps:
@@ -52,7 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ steps.package-version.outputs.current-version }}
+          release_name: Release ${{ github.ref }}
           body: ${{ steps.changelog.outputs.changelog }}
           draft: false
           prerelease: false
