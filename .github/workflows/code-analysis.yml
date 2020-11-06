@@ -1,9 +1,10 @@
 name: "CodeQL"
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types:
+      - "created"
+      - published
   schedule:
     - cron: '30 3 * * 5'
 
