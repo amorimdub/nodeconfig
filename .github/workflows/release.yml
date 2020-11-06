@@ -17,45 +17,35 @@ jobs:
           registry-url: https://npm.pkg.github.com/
       - run: yarn
       - run: yarn test
-      - run: |
-          git config --global user.email "amorimdub@gmail.com"
-          git config --global user.name "Felipe Silva"
-          npm version patch
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate changelog
         id: changelog
         uses: metcalfc/changelog-generator@v0.4.4
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Bump version and push tag
-      #   id: bump_version
-      #   uses: anothrNick/github-tag-action@1.17.2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     WITH_V: true
-      #     RELEASE_BRANCHES: main
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
+      - name: Bump version and push tag
+        id: bump_version
+        uses: anothrNick/github-tag-action@1.17.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          RELEASE_BRANCHES: main
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.package-version.outputs.current-version }}
+          tag_name: ${{ steps.bump_version.outputs.tag }}
           release_name: Release ${{ steps.package-version.outputs.current-version }}
           body: ${{ steps.changelog.outputs.changelog }}
           draft: false
           prerelease: false
-      # - run: |
-      #     git config --global user.email "amorimdub@gmail.com"
-      #     git config --global user.name "Felipe Silva"
-      #     echo "${{ steps.bump_version.outputs.tag }}"
-      # - run: |
-      #     npm version "${{ steps.bump_version.outputs.tag }}"
-      #     npm publish
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          git config --global user.email "amorimdub@gmail.com"
+          git config --global user.name "Felipe Silva"
+          echo "${{ steps.bump_version.outputs.tag }}"
+      - run: |
+          npm version "${{ steps.bump_version.outputs.tag }}"
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
