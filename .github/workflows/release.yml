@@ -43,7 +43,7 @@ jobs:
           git config --global user.name "Felipe Silva"
           echo "${{ steps.bump_version.outputs.tag }}"
       - run: |
-          npm version "${{ steps.bump_version.outputs.tag }}"\
+          npm version "${{ steps.bump_version.outputs.tag }}"
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
