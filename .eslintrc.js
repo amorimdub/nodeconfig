@@ -1,36 +1,23 @@
 module.exports = {
   env: {
-    browser: true,
     es2020: true,
     node: true,
-    jest: true
+    jest: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'standard',
-    'plugin:@typescript-eslint/recommended',
-    'prettier/@typescript-eslint',
-    'prettier/standard',
-    'prettier/react'
-  ],
+  extends: ['standard', 'plugin:@typescript-eslint/recommended', 'prettier/@typescript-eslint', 'prettier/standard'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true
-    },
     ecmaVersion: 11,
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    'prettier/prettier': 'error'
+    'prettier/prettier': 'error',
+    'comma-dangle': 'off',
   },
   settings: {
     'import/resolver': {
-      typescript: {}
+      typescript: {},
     },
-    react: {
-      version: 'detect',
-    },
-  }
+  },
 }

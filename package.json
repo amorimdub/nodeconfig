@@ -1,7 +1,8 @@
 {
   "name": "@amorimdub/nodeconfig",
   "version": "2.0.1",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "author": "Felipe Silva <amorimdub@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -11,7 +12,24 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/*.ts\"",
+    "lint": "eslint src/**",
+    "test": "jest",
+    "prepare": "yarn build",
+    "prepublishOnly": "yarn test && yarn run lint",
+    "preversion": "yarn run lint",
+    "version": "yarn run format && git add -A .",
+    "postversion": "git push && git push --tags"
+  },
+  "files": [
+    "lib/**/*"
+  ],
   "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/eslint": "^7.2.4",
+    "@types/jest": "^26.0.15",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
     "eslint": "^7.5.0",
@@ -22,8 +40,10 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-standard": "^4.0.1",
-    "prettier": "^2.0.5"
+    "jest": "^26.6.3",
+    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.3",
+    "typescript": "^4.0.5"
   }
 }
