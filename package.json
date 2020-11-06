@@ -21,7 +21,7 @@
     "prepublishOnly": "yarn test && yarn run lint",
     "preversion": "yarn run lint",
     "version": "yarn run format && git add -A .",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push origin main --tags"
   },
   "files": [
     "lib/**/*"
