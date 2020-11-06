@@ -23,6 +23,7 @@ jobs:
           skip-tag:  'true'
 
   publish-gpr:
+    name: Publish
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -37,6 +38,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
   release:
     name: Create Release
+    needs: publish-gpr
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
