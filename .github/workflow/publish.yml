@@ -1,0 +1,32 @@
+name: publish
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish_tag_package:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      id: bump_version
+      uses: anothrNick/github-tag-action@1.17.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
+        RELEASE_BRANCHES: master
+
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: 'https://npm.pkg.github.com'
+        scope: '@amorimdub'
+
+    - run: |
+        git config --global user.email "amorimdub@gmail.com"
+        git config --global user.name "Felipe Silva"
+        echo "${{ steps.bump_version.outputs.tag }}"
+    - run: npm version "${{ steps.bump_version.outputs.tag }}" && npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
